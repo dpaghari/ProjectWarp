@@ -50,7 +50,8 @@ var CursorScreen = me.ScreenObject.extend({
 	
 	//Update function	
 	update : function()
-	{		
+	{	
+		//this.audio.on = true; 	
 		/*if(me.input.isKeyPressed('three')){
 			
 			me.levelDirector.loadLevel("level3");
@@ -80,9 +81,31 @@ var CursorScreen = me.ScreenObject.extend({
 			}
 			else if(me.input.isKeyPressed('down') || me.input.isKeyPressed("downz")){
 				this.title = me.loader.getImage("title_screen_level_select");
-				console.log("pressed down in options");
+				console.log("pressed down in options"); 
+			}
+			if(me.input.isKeyPressed('enter')){
+				console.log("pressed enter in options");
+				me.audio.disable();
+
 			}
 		}
+
+		if(this.title == me.loader.getImage("title_screen_options")){
+			if(me.input.isKeyPressed('jump') || me.input.isKeyPressed("upz")){
+				this.title = me.loader.getImage("title_screen_play_game");
+				console.log("pressed up in options");
+			}
+			else if(me.input.isKeyPressed('down') || me.input.isKeyPressed("downz")){
+				this.title = me.loader.getImage("title_screen_level_select");
+				console.log("pressed down in options");
+			}
+			if(me.input.isKeyPressed('enter')){
+				console.log("pressed enter in options");
+				this.title = me.loader.getImage("title_screen_options");
+				
+			}
+		}
+
 		if(this.title == me.loader.getImage("title_screen_level_select")){
 			if(me.input.isKeyPressed('jump') || me.input.isKeyPressed("upz")){
 				this.title = me.loader.getImage("title_screen_options");
@@ -93,7 +116,7 @@ var CursorScreen = me.ScreenObject.extend({
 				console.log("pressed down in level");
 			}
 			if(me.input.isKeyPressed('enter')){
-				
+				console.log("pressed enter in level select");
 				this.title = me.loader.getImage("level_select_screen");
 				
 			}
