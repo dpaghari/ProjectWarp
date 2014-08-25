@@ -289,8 +289,6 @@ var jsApp = {
 		// set all resources to be loaded
 		me.loader.preload(g_resources);
         
-        // Initialize the timer to be local
-        //this.time = time;
 	},
 
 	/* ---

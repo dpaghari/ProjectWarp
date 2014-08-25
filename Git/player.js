@@ -1,3 +1,6 @@
+
+var c = document.getElementById("myCanvas");
+var ctx = c.getContext("2d");
 /*------------------- 
 a player entity
 -------------------------------- */
@@ -9,8 +12,13 @@ var PlayerEntity = me.ObjectEntity.extend({
  
     ------ */
  
-    init: function(x, y, settings) {
-                                    
+    init: function(x, y, settings) {   
+        var obj = new Timer();   
+
+        function timer_tick() {
+            console.log("timer: " + timerId);
+        }                     
+
     	// Set the sprite's height and width(important for spritesheet)
     	settings.spritewidth = 32;
     	settings.spriteheight = 44;
@@ -48,7 +56,26 @@ var PlayerEntity = me.ObjectEntity.extend({
         // set the display to follow our position on both axis
         me.game.viewport.follow(this.pos, me.game.viewport.AXIS.BOTH);
 
+        // Initialize timer
+        obj.Interval = 1000;
+        obj.Tick = timer_tick;
+        obj.Start();
 		
+    },
+
+    draw: function(ctx) {
+        ctx.font = "30px Arial";
+        // Create gradient
+        var gradient=ctx.createLinearGradient(100,100,c.width,0);
+        gradient.addColorStop("0","magenta");
+        gradient.addColorStop("0.5","blue");
+        gradient.addColorStop("1.0","red");
+        // Fill with gradient
+        ctx.strokeStyle=gradient;
+        ctx.strokeText(timerId,500,310);
+        this.parent(ctx);
+        this.testText = new me.Font("Verdana", 14, "white");
+        this.testText.draw(ctx, timerId, this.pos.x, this.pos.y, 50);
     },
 
     /* -----
@@ -57,7 +84,6 @@ var PlayerEntity = me.ObjectEntity.extend({
  
     ------ */
     update: function() {
-            //console.log(time);
                                           
     	
     	
@@ -318,6 +344,8 @@ var PlayerEntity = me.ObjectEntity.extend({
     				me.game.remove(this)});
     				this.parent();
     				return true;
+                timerId = 0;
+                obj.Stop();    
  		}
         // update animation if necessary
         if (this.vel.x!=0 && this.vel.y==0) {
