@@ -55,6 +55,10 @@ var g_resources =
 	type: "tmx",
 	src: "data/tileset/level9.tmx"
 },{
+	name: "level10",
+	type: "tmx",
+	src: "data/tileset/level10.tmx"
+},{
 	name : "loading_screen",
 	type : "image",
 	src : "data/loading_screen.jpg"
@@ -420,7 +424,7 @@ var PlayScreen = me.ScreenObject.extend({
 		me.levelDirector.loadLevel("level1");
 		me.sys.gravity = 0.98;
 		//me.sys.fps = 60;
-        me.audio.playTrack("no_pass", 0.5);
+        //me.audio.playTrack("no_pass", 0.5);
 		// Add a HUD for the timer and start it
         me.game.addHUD(0, 0, 800, 600);
         //me.game.add(new Manager(), 0);

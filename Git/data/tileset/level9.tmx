@@ -54,7 +54,7 @@
   <properties>
    <property name="me.sys.preRender" value="true"/>
   </properties>
-  <object name="mainPlayer" x="32" y="64" width="64" height="64">
+  <object name="mainPlayer" x="1536" y="64" width="64" height="64">
    <properties>
     <property name="image" value="player_sheet"/>
     <property name="spritewidth" value="32"/>
@@ -103,7 +103,7 @@
    <properties>
     <property name="duration" value="250"/>
     <property name="fade " value="#000000"/>
-    <property name="to" value="level1"/>
+    <property name="to" value="level10"/>
    </properties>
   </object>
   <object name="SentryGunEntity" x="928" y="384" width="64" height="64">

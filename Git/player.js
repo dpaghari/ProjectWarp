@@ -156,6 +156,11 @@ var PlayerEntity = me.ObjectEntity.extend({
     					me.game.add(noteThing, this.z);
     					me.game.sort();
     					}	
+    					if(daCurLevel == "level10"){
+    					noteThing = new me.SpriteObject(this.pos.x, this.pos.y - 200, me.loader.getImage("note9"));
+    					me.game.add(noteThing, this.z);
+    					me.game.sort();
+    					}	
     	    	
     	    			isReading = true;
 
