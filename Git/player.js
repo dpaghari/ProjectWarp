@@ -1,11 +1,11 @@
 
 var c = document.getElementById("myCanvas");
 var ctx = c.getContext("2d");
+var obj = new Timer();  
 /*------------------- 
 a player entity
 -------------------------------- */
-var PlayerEntity = me.ObjectEntity.extend({
- 
+var PlayerEntity = me.ObjectEntity.extend({ 
     /* -----
  
     constructor
@@ -13,7 +13,6 @@ var PlayerEntity = me.ObjectEntity.extend({
     ------ */
  
     init: function(x, y, settings) {   
-        var obj = new Timer();   
 
         function timer_tick() {
             console.log("timer: " + timerId);
@@ -63,16 +62,9 @@ var PlayerEntity = me.ObjectEntity.extend({
 		
     },
 
+    // Draw the timer
     draw: function(ctx) {
         ctx.font = "30px Arial";
-        // Create gradient
-        var gradient=ctx.createLinearGradient(100,100,c.width,0);
-        gradient.addColorStop("0","magenta");
-        gradient.addColorStop("0.5","blue");
-        gradient.addColorStop("1.0","red");
-        // Fill with gradient
-        ctx.strokeStyle=gradient;
-        ctx.strokeText(timerId,500,310);
         this.parent(ctx);
         this.testText = new me.Font("Verdana", 14, "white");
         this.testText.draw(ctx, timerId, this.pos.x, this.pos.y, 50);
@@ -282,11 +274,13 @@ var PlayerEntity = me.ObjectEntity.extend({
        		}
         }
 		if (me.input.isKeyPressed("pause")) {
-				me.state.pause();   			
+				me.state.pause();   
+                obj.Stop();			
     			var resume_loop = setInterval(function check_resume() {
         		if (me.input.isKeyPressed("pause")) {
             		clearInterval(resume_loop);
             		me.state.resume();
+                    obj.Start();
         		}
     			}, 100);
 		}
@@ -333,24 +327,24 @@ var PlayerEntity = me.ObjectEntity.extend({
     		
     	}
  		// Disable controls when dead
- 		if(this.isDeadz){
- 				me.game.remove(arm);
- 				me.input.unbindKey(me.input.KEY.A);
-    			me.input.unbindKey(me.input.KEY.W);
-    			me.input.unbindKey(me.input.KEY.S);
-    			me.input.unbindKey(me.input.KEY.D);
-    			me.input.unbindKey(me.input.KEY.SPACE);
-    			this.vel.y = 0;
-    			this.gravity = 0;
-    			this.setCurrentAnimation("die", function(){
-    				var currentLevel = me.levelDirector.getCurrentLevelId();
-    				bulletAlive = false;
-    				me.levelDirector.loadLevel(currentLevel);
-    				me.game.remove(this)});
-    				this.parent();
-    				return true;
-                timerId = 0;
-                obj.Stop();    
+ 		if(this.isDeadz){   
+            obj.Stop();
+			me.game.remove(arm);
+			me.input.unbindKey(me.input.KEY.A);
+			me.input.unbindKey(me.input.KEY.W);
+			me.input.unbindKey(me.input.KEY.S);
+			me.input.unbindKey(me.input.KEY.D);
+			me.input.unbindKey(me.input.KEY.SPACE);
+			this.vel.y = 0;
+			this.gravity = 0;
+			this.setCurrentAnimation("die", function(){
+				var currentLevel = me.levelDirector.getCurrentLevelId();
+				bulletAlive = false;
+				me.levelDirector.loadLevel(currentLevel);
+				me.game.remove(this)
+            });
+			this.parent();
+			return true;
  		}
         // update animation if necessary
         if (this.vel.x!=0 && this.vel.y==0) {
