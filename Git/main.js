@@ -240,6 +240,10 @@ var g_resources =
 	type: "image",
 	src: "data/labnotes/labnote9.png"
 },{
+	name: "levelComplete",
+	type: "image",
+	src: "data/GUI/levelComplete.png"
+},{
 	name: "no_pass",
 	type: "audio",
 	src: "data/audio/",
