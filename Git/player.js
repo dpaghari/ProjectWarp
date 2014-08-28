@@ -197,27 +197,25 @@ var PlayerEntity = me.ObjectEntity.extend({
 	    
 		// Attach Arm to Character
 		if(armNum == 0){
-	 	arm = new ArmEntity(this.pos.x, this.pos.y, {image: "arm", spritewidth: 20, spriteheight: 20});
-    	me.game.add(arm, this.z+1); 
-   		me.game.sort();
-   		
-   		armNum = 1;
+    	 	arm = new ArmEntity(this.pos.x, this.pos.y, {image: "arm", spritewidth: 20, spriteheight: 20});
+        	me.game.add(arm, this.z+1); 
+       		me.game.sort();
+       		
+       		armNum = 1;
    		}
    		// Arm Logic to keep arm at a "normal" position when the character moves
     	if (faceRight == true){
-		
-		arm.pos.x = this.pos.x - 1;
-		arm.pos.y = this.pos.y + 25;
+    		arm.pos.x = this.pos.x - 1;
+    		arm.pos.y = this.pos.y + 25;
 		}
-		else{
-			
+		else{		
 			arm.pos.x = this.pos.x + 19;
 			arm.pos.y = this.pos.y + 25;
 		}
 		if (me.input.isKeyPressed('left')&&(walkleft == true)) {
+            this.setVelocity(4, 12);
             // flip the sprite on horizontal axis
             this.flipX(true);
-
             arm.pos.x = this.pos.x + 10;
             // update the entity velocity
             this.vel.x -= this.accel.x * me.timer.tick;
@@ -226,8 +224,8 @@ var PlayerEntity = me.ObjectEntity.extend({
             faceLeft = true;
 
         } else if (me.input.isKeyPressed('right')&&(walkright == true)) {
+            //this.setVelocity(4, 12);
             // unflip the sprite
-            
             this.flipX(false);
             arm.flipX(false);
             arm.pos.x = this.pos.x + 10;
@@ -236,10 +234,10 @@ var PlayerEntity = me.ObjectEntity.extend({
             walkleft = true;
             faceLeft = false;
             faceRight = true;
-
         } else {
             this.vel.x = 0;
         }
+
         if (me.input.isKeyPressed('jump')) {
             // make sure we are not already jumping or falling
              if (!this.jumping && !this.falling) {
@@ -250,9 +248,12 @@ var PlayerEntity = me.ObjectEntity.extend({
                 // set the jumping flag
                 this.jumping = true;
             }
-			
-			
         }
+
+        while (me.input.isKeyPressed('shift') && (me.input.isKeyPressed('right'))){
+            this.setVelocity(10, 12);
+            console.log("shiftin'");
+        } 
         
         if (me.input.isKeyPressed('shoot')) {
         	if(bulletAlive == false){
@@ -275,7 +276,7 @@ var PlayerEntity = me.ObjectEntity.extend({
         }
 		if (me.input.isKeyPressed("pause")) {
             obj.onPause();
-			me.state.pause();   
+			me.state.pause();  
 			var resume_loop = setInterval(function check_resume() {
     		if (me.input.isKeyPressed("pause")) {
         		clearInterval(resume_loop);
@@ -355,7 +356,11 @@ var PlayerEntity = me.ObjectEntity.extend({
         // Reset timer if level complete
         if(this.levelComplete) {
             obj.Stop();
-            levelCompleteScreen.Draw();
+            // create a static Sprite Object
+            var levelCompleteScreen = new me.SpriteObject (500, 500, me.loader.getImage("LevelComplete")); 
+            me.game.add(levelCompleteScreen, this.z);
+            me.game.sort();
+            console.log(levelCompleteScreen.x);
         }
 
         // update animation if necessary

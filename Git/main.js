@@ -347,6 +347,7 @@ var jsApp = {
 		me.input.bindKey(me.input.KEY.SPACE, "warp", true);
 		me.input.bindKey(me.input.KEY.U, "shoot", true);
 		me.input.bindKey(me.input.KEY.ENTER, "enter", true);
+		me.input.bindKey(me.input.KEY.SHIFT, "shift", true);
 		me.input.bindMouse(me.input.mouse.LEFT, me.input.KEY.U);
 		
 		// start the game
