@@ -1,7 +1,8 @@
 
 var c = document.getElementById("myCanvas");
 var ctx = c.getContext("2d");
-var obj = new Timer();  
+var obj = new Timer(); 
+var levelCompleteScreen = new LevelComplete(); 
 /*------------------- 
 a player entity
 -------------------------------- */
@@ -69,7 +70,7 @@ var PlayerEntity = me.ObjectEntity.extend({
     draw: function(ctx) {
         ctx.font = "30px Arial";
         this.parent(ctx);
-        this.testText = new me.Font("Verdana", 48, "white");
+        this.testText = new me.Font("Futura", 25, "white");
 
         // Set the timer's position
         this.testText.draw(ctx, timerIdMinutes + ":" + timerId, me.game.viewport.pos.x + 500, me.game.viewport.pos.y + 50, 50);
@@ -81,147 +82,139 @@ var PlayerEntity = me.ObjectEntity.extend({
  
     ------ */
     update: function() {
-             
-             
-             
-                                          
-    	console.log("X: " + me.game.viewport.pos.x + ", Y: " + me.game.viewport.pos.y);
+             	
+		walkleft = walkright = true;
+    	var res = me.game.collide(this);
     	
-    		walkleft = walkright = true;
-	    	var res = me.game.collide(this);
-	    	
-	    	// If the player collides with a glass wall restrict his movement
-    	         if (res && (res.obj.type == "glassWallv"||res.obj.type == "glassWallh")){
-    		        if (res.x != 0){
-                 // x axis
-                    if (res.x<0){
-                    	 walkleft = false;
-			             walkright= true;
-                    }  
-                    else{
-                    	 walkleft = true;
-			             walkright= false;                    	
-                    }
-                      
-                 }
-        	}
-        	// If the player collides with a rubber wall restrict his movement
-        	 if (res && (res.obj.type == "rubberWallv" || res.obj.type == "sentryguy")){	
-    		        if (res.x != 0){
-                 // x axis
-                    if (res.x<0){
-                    	walkleft = false;
-			            walkright= true;						 
-                    }  
-                    else{
-                    	 walkleft = true;
-			             walkright= false;  	
-                   }                   
-                 }
-                  if (res.y != 0){
-              
-              		if (res.y < 0){
-              			this.vel.y = 0;	
-              			
-              		}
-        		}
-        	}
-    	    
-    	    // If the player has collected a note and presses E it allows the player to read the note depending on the level
-    	    if(isReading == false && noteCollected == true && me.input.isKeyPressed("read")){
-    	    			if(daCurLevel == "level1"){
-    						noteThing = new me.SpriteObject(this.pos.x, this.pos.y - 200, me.loader.getImage("note1"));
-    						me.game.add(noteThing, this.z);
-    						me.game.sort();
-    					}
-    	
-    					if(daCurLevel == "level2"){
-    					noteThing = new me.SpriteObject(this.pos.x, this.pos.y - 200, me.loader.getImage("note2"));
-    					me.game.add(noteThing, this.z);
-    					me.game.sort();
-    					}
-    	
-    					if(daCurLevel == "level3"){
-    					noteThing = new me.SpriteObject(this.pos.x, this.pos.y - 200, me.loader.getImage("note3"));
-    					me.game.add(noteThing, this.z);
-    					me.game.sort();
-    					}
-    	
-    					if(daCurLevel == "level4"){
-    					noteThing = new me.SpriteObject(this.pos.x, this.pos.y - 200, me.loader.getImage("note4"));
-    					me.game.add(noteThing, this.z);
-    					me.game.sort();
-    					}
-    	
-    					if(daCurLevel == "level5"){
-    					noteThing = new me.SpriteObject(this.pos.x, this.pos.y - 200, me.loader.getImage("note5"));
-    					me.game.add(noteThing, this.z);
-    					me.game.sort();
-    					}
-    	
-    					if(daCurLevel == "level6"){
-    					noteThing = new me.SpriteObject(this.pos.x, this.pos.y - 200, me.loader.getImage("note6"));
-    					me.game.add(noteThing, this.z);
-    					me.game.sort();
-    					}
-    	
-    					if(daCurLevel == "level7"){
-    					noteThing = new me.SpriteObject(this.pos.x, this.pos.y - 200, me.loader.getImage("note7"));
-    					me.game.add(noteThing, this.z);
-    					me.game.sort();
-    					}
-    	
-    					if(daCurLevel == "level8"){
-    					noteThing = new me.SpriteObject(this.pos.x, this.pos.y - 200, me.loader.getImage("note8"));
-    					me.game.add(noteThing, this.z);
-    					me.game.sort();
-    					}
-    	
-    					if(daCurLevel == "level9"){
-    					noteThing = new me.SpriteObject(this.pos.x, this.pos.y - 200, me.loader.getImage("note9"));
-    					me.game.add(noteThing, this.z);
-    					me.game.sort();
-    					}	
-    					if(daCurLevel == "level10"){
-    					noteThing = new me.SpriteObject(this.pos.x, this.pos.y - 200, me.loader.getImage("note9"));
-    					me.game.add(noteThing, this.z);
-    					me.game.sort();
-    					}	
-    	    	
-    	    			isReading = true;
+    	// If the player collides with a glass wall restrict his movement
+        if (res && (res.obj.type == "glassWallv"||res.obj.type == "glassWallh")){
+	        if (res.x != 0){
+                // x axis
+                if (res.x<0){
+                	 walkleft = false;
+		             walkright= true;
+                }  
+                else{
+                	 walkleft = true;
+		             walkright= false;                    	
+                } 
+            }
+    	}
+    	// If the player collides with a rubber wall restrict his movement
+    	if (res && (res.obj.type == "rubberWallv" || res.obj.type == "sentryguy")){	
+		    if (res.x != 0){
+            // x axis
+                if (res.x<0){
+                	walkleft = false;
+		            walkright= true;						 
+                }  
+                else{
+                	 walkleft = true;
+		             walkright= false;  	
+                }                   
+            }
+            if (res.y != 0){
+          	    if (res.y < 0){
+          		    this.vel.y = 0;	
+          			
+          		}
+    		}
+    	}
+	    
+	    // If the player has collected a note and presses E it allows the player to read the note depending on the level
+	    if(isReading == false && noteCollected == true && me.input.isKeyPressed("read")){
+			if(daCurLevel == "level1"){
+				noteThing = new me.SpriteObject(this.pos.x, this.pos.y - 200, me.loader.getImage("note1"));
+				me.game.add(noteThing, this.z);
+				me.game.sort();
+			}
 
-    	    }
-    	    // Put Away Note to continue playing
-    	    if(isReading == true && me.input.isKeyPressed("read")){
-    	   		me.game.remove(noteThing);
-    	   		me.game.sort();
-        		isReading = false;
-    	    }
-    	    
-    	   
-    	    
-    	    
-    		// Attach Arm to Character
-    		if(armNum == 0){
-    	 	arm = new ArmEntity(this.pos.x, this.pos.y, {image: "arm", spritewidth: 20, spriteheight: 20});
-        	me.game.add(arm, this.z+1); 
-       		me.game.sort();
-       		
-       		armNum = 1;
-       		}
-       		// Arm Logic to keep arm at a "normal" position when the character moves
-        	if (faceRight == true){
+			if(daCurLevel == "level2"){
+				noteThing = new me.SpriteObject(this.pos.x, this.pos.y - 200, me.loader.getImage("note2"));
+				me.game.add(noteThing, this.z);
+				me.game.sort();
+			}
+
+			if(daCurLevel == "level3"){
+				noteThing = new me.SpriteObject(this.pos.x, this.pos.y - 200, me.loader.getImage("note3"));
+				me.game.add(noteThing, this.z);
+				me.game.sort();
+			}
+
+			if(daCurLevel == "level4"){
+				noteThing = new me.SpriteObject(this.pos.x, this.pos.y - 200, me.loader.getImage("note4"));
+				me.game.add(noteThing, this.z);
+				me.game.sort();
+			}
+
+			if(daCurLevel == "level5"){
+				noteThing = new me.SpriteObject(this.pos.x, this.pos.y - 200, me.loader.getImage("note5"));
+				me.game.add(noteThing, this.z);
+				me.game.sort();
+			}
+
+			if(daCurLevel == "level6"){
+				noteThing = new me.SpriteObject(this.pos.x, this.pos.y - 200, me.loader.getImage("note6"));
+				me.game.add(noteThing, this.z);
+				me.game.sort();
+			}
+
+			if(daCurLevel == "level7"){
+				noteThing = new me.SpriteObject(this.pos.x, this.pos.y - 200, me.loader.getImage("note7"));
+				me.game.add(noteThing, this.z);
+				me.game.sort();
+			}
+
+			if(daCurLevel == "level8"){
+				noteThing = new me.SpriteObject(this.pos.x, this.pos.y - 200, me.loader.getImage("note8"));
+				me.game.add(noteThing, this.z);
+				me.game.sort();
+			}
+
+			if(daCurLevel == "level9"){
+				noteThing = new me.SpriteObject(this.pos.x, this.pos.y - 200, me.loader.getImage("note9"));
+				me.game.add(noteThing, this.z);
+				me.game.sort();
+			}	
+			if(daCurLevel == "level10"){
+				noteThing = new me.SpriteObject(this.pos.x, this.pos.y - 200, me.loader.getImage("note9"));
+				me.game.add(noteThing, this.z);
+				me.game.sort();
+			}	
+	
+			isReading = true;
+
+	    }
+	    // Put Away Note to continue playing
+	    if(isReading == true && me.input.isKeyPressed("read")){
+	   		me.game.remove(noteThing);
+	   		me.game.sort();
+    		isReading = false;
+	    }
+	    
+	   
+	    
+	    
+		// Attach Arm to Character
+		if(armNum == 0){
+	 	arm = new ArmEntity(this.pos.x, this.pos.y, {image: "arm", spritewidth: 20, spriteheight: 20});
+    	me.game.add(arm, this.z+1); 
+   		me.game.sort();
+   		
+   		armNum = 1;
+   		}
+   		// Arm Logic to keep arm at a "normal" position when the character moves
+    	if (faceRight == true){
+		
+		arm.pos.x = this.pos.x - 1;
+		arm.pos.y = this.pos.y + 25;
+		}
+		else{
 			
-			arm.pos.x = this.pos.x - 1;
+			arm.pos.x = this.pos.x + 19;
 			arm.pos.y = this.pos.y + 25;
-			}
-			else{
-				
-				arm.pos.x = this.pos.x + 19;
-				arm.pos.y = this.pos.y + 25;
-			}
-			if (me.input.isKeyPressed('left')&&(walkleft == true)) {
-        
+		}
+		if (me.input.isKeyPressed('left')&&(walkleft == true)) {
             // flip the sprite on horizontal axis
             this.flipX(true);
 
@@ -232,8 +225,7 @@ var PlayerEntity = me.ObjectEntity.extend({
             faceRight = false;
             faceLeft = true;
 
-   
-           } else if (me.input.isKeyPressed('right')&&(walkright == true)) {
+        } else if (me.input.isKeyPressed('right')&&(walkright == true)) {
             // unflip the sprite
             
             this.flipX(false);
@@ -264,62 +256,62 @@ var PlayerEntity = me.ObjectEntity.extend({
         
         if (me.input.isKeyPressed('shoot')) {
         	if(bulletAlive == false){
-        	//normalize vectors to make speed constant
-        	mouseX = (me.input.mouse.pos.x+me.game.viewport.pos.x)-this.pos.x;		 //mouse x position + offset of viewport
-        	mouseY = (me.input.mouse.pos.y+me.game.viewport.pos.y)-this.pos.y;		//mouse y position + offset of viewport
-        	magnitude = (Math.sqrt(mouseX*mouseX + mouseY*mouseY));
-        	vectorX = mouseX/magnitude;				
-  		   	vectorY = mouseY/magnitude;
-        	speed = 10;
-       		direction = new me.Vector2d(vectorX*speed, vectorY*speed);
-       		//create bullet
-        	bullet = new BulletEntity(this.pos.x, this.pos.y, { image: 'bullet', spritewidth: 14 , spriteheight: 14});
-        	bullet.vel = direction;
-        	me.game.add(bullet, this.z);
-      	  	me.game.sort();
-      	  	 
-    	  	bulletAlive = true;
+            	//normalize vectors to make speed constant
+            	mouseX = (me.input.mouse.pos.x+me.game.viewport.pos.x)-this.pos.x;		 //mouse x position + offset of viewport
+            	mouseY = (me.input.mouse.pos.y+me.game.viewport.pos.y)-this.pos.y;		//mouse y position + offset of viewport
+            	magnitude = (Math.sqrt(mouseX*mouseX + mouseY*mouseY));
+            	vectorX = mouseX/magnitude;				
+      		   	vectorY = mouseY/magnitude;
+            	speed = 10;
+           		direction = new me.Vector2d(vectorX*speed, vectorY*speed);
+           		//create bullet
+            	bullet = new BulletEntity(this.pos.x, this.pos.y, { image: 'bullet', spritewidth: 14 , spriteheight: 14});
+            	bullet.vel = direction;
+            	me.game.add(bullet, this.z);
+          	  	me.game.sort();
+          	  	 
+        	  	bulletAlive = true;
        		}
         }
 		if (me.input.isKeyPressed("pause")) {
-				me.state.pause();   
-                obj.Stop();			
-    			var resume_loop = setInterval(function check_resume() {
-        		if (me.input.isKeyPressed("pause")) {
-            		clearInterval(resume_loop);
-            		me.state.resume();
-                    obj.Start();
-        		}
-    			}, 100);
+            obj.onPause();
+			me.state.pause();   
+			var resume_loop = setInterval(function check_resume() {
+    		if (me.input.isKeyPressed("pause")) {
+        		clearInterval(resume_loop);
+        		me.state.resume();
+                obj.unPause();
+    		}
+			}, 100);
 		}
 		
 		// If they press R
         if(me.input.isKeyPressed('restart')){
         		
-        		var currentLevel = me.levelDirector.getCurrentLevelId();
-        		me.levelDirector.loadLevel(currentLevel);        	
+        	var currentLevel = me.levelDirector.getCurrentLevelId();
+        	me.levelDirector.loadLevel(currentLevel);        	
         }
         
         // If they press Space they activate the warp mechanic
         if(me.input.isKeyPressed('warp')) {
         	if(bulletAlive == true){
-        	//warps to bullet's position
-        	warpIn = new WarpEntity(this.pos.x, this.pos.y,{image:"warp_sheet", spritewidth: 32, spriteheight: 44});
-        	me.game.add(warpIn, this.z);
-        	me.game.sort();
-        	this.pos.x = bullet.pos.x;
-        	this.pos.y = bullet.pos.y;
-        	isWarp = new WarpEntity(this.pos.x, this.pos.y,{image:"warp_sheet", spritewidth: 32, spriteheight: 44});
-        	me.game.add(isWarp, this.z);
-        	me.game.sort();
-        	bulletAlive = false;
-        	walkleft = true;
-			walkright= true;  
-        	me.game.remove(bullet, true);
+            	//warps to bullet's position
+            	warpIn = new WarpEntity(this.pos.x, this.pos.y,{image:"warp_sheet", spritewidth: 32, spriteheight: 44});
+            	me.game.add(warpIn, this.z);
+            	me.game.sort();
+            	this.pos.x = bullet.pos.x;
+            	this.pos.y = bullet.pos.y;
+            	isWarp = new WarpEntity(this.pos.x, this.pos.y,{image:"warp_sheet", spritewidth: 32, spriteheight: 44});
+            	me.game.add(isWarp, this.z);
+            	me.game.sort();
+            	bulletAlive = false;
+            	walkleft = true;
+    			walkright= true;  
+            	me.game.remove(bullet, true);
         	}
         }
         // If the character falls past the death threshold
-          if (this.pos.y > coordy){
+        if (this.pos.y > coordy){
     		this.isDeadz = true;
     	}
  
@@ -330,13 +322,13 @@ var PlayerEntity = me.ObjectEntity.extend({
     	var res = me.game.collide(this);
    		// If the player collides with an enemy object
     	if(res && (res.obj.type == me.game.ENEMY_OBJECT)){
-    			this.isDeadz = true;
-    			gotHit = true;		
+    		this.isDeadz = true;
+    		gotHit = true;		
     	}
 
         // If the player collides with an exit portal
         if(res && (res.obj.type == me.game.LevelEntity)){
-                this.levelComplete = true;
+            this.levelComplete = true;
         }
 
  		// Disable controls when dead
@@ -363,6 +355,7 @@ var PlayerEntity = me.ObjectEntity.extend({
         // Reset timer if level complete
         if(this.levelComplete) {
             obj.Stop();
+            levelCompleteScreen.Draw();
         }
 
         // update animation if necessary
