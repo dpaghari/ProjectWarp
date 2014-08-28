@@ -81,6 +81,9 @@ var PlayerEntity = me.ObjectEntity.extend({
  
     ------ */
     update: function() {
+             
+             
+             
                                           
     	console.log("X: " + me.game.viewport.pos.x + ", Y: " + me.game.viewport.pos.y);
     	
