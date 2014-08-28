@@ -54,6 +54,9 @@ var PlayerEntity = me.ObjectEntity.extend({
  		
         // set the display to follow our position on both axis
         me.game.viewport.follow(this.pos, me.game.viewport.AXIS.BOTH);
+        console.log(me.game.viewport.pos.x);
+        //var cameraX = this.pos;
+        //var cameraY = me.game.viewport.AXIS.BOTH;
 
         // Initialize timer
         obj.Interval = 1000;
@@ -66,8 +69,10 @@ var PlayerEntity = me.ObjectEntity.extend({
     draw: function(ctx) {
         ctx.font = "30px Arial";
         this.parent(ctx);
-        this.testText = new me.Font("Verdana", 14, "white");
-        this.testText.draw(ctx, timerId, this.pos.x, this.pos.y, 50);
+        this.testText = new me.Font("Verdana", 48, "white");
+
+        // Set the timer's position
+        this.testText.draw(ctx, " :" + timerId, me.game.viewport.pos.x + 500, me.game.viewport.pos.y + 50, 50);
     },
 
     /* -----
@@ -77,7 +82,7 @@ var PlayerEntity = me.ObjectEntity.extend({
     ------ */
     update: function() {
                                           
-    	
+    	console.log("X: " + me.game.viewport.pos.x + ", Y: " + me.game.viewport.pos.y);
     	
     		walkleft = walkright = true;
 	    	var res = me.game.collide(this);
