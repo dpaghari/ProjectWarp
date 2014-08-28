@@ -1,12 +1,13 @@
 // Member variable: Hold interval id of the timer
 var timerId = 0;
-var maxTime;
+var timerIdMinutes = 0;
+
 // Declaring class "Timer"
-var Timer = function(maxTime)
+var Timer = function()
 {        
     // Property: Frequency of elapse event of the timer in millisecond
     this.Interval = 1000;
-    this.maxT = maxTime;
+    
     // Property: Whether the timer is enable or not
     this.Enable = new Boolean(false);
     
@@ -30,6 +31,10 @@ var Timer = function(maxTime)
             {
                 thisObject.Tick(); 
                 timerId++;
+                if (timerId == 60) {
+                    timerIdMinutes = 1;
+                    timerId = 0; 
+                }
             }, thisObject.Interval);
         }
     };
@@ -40,20 +45,7 @@ var Timer = function(maxTime)
         thisObject.Enable = new Boolean(false);
         clearInterval(thisObject.timerId);
         timerId = "";
+        timerIdMinutes = "";
     };
-    
-    this.isFinished = function(){
-    	
-    	if(timerId >= this.maxT ){
-    		timerId = this.maxT;
-    		this.Stop();
-    		return true;
-    	}
-    	else{
-    		return false;
-    	}
-    	
-    }
-    
 
 };
