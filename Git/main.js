@@ -333,6 +333,7 @@ var jsApp = {
 		me.entityPool.add("GreenLaserv", GreenLaservEntity, true);				// Vertical Green Laser
 		me.entityPool.add("GreenLaserh", GreenLaserhEntity, true);				// Horizontal Green Laser
 		me.entityPool.add("BulletDeathEntity", BulletDeathEntity, true);
+		me.entityPool.add("MovingLaserEntity", MovingLaserEntity, true);
 		
 		// enable the keyboard
 		me.input.bindKey(me.input.KEY.A, "left");
