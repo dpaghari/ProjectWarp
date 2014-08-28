@@ -1,6 +1,7 @@
 /*------------------- 
 a player entity
 -------------------------------- */
+
 var MovingLaserEntity = me.ObjectEntity.extend({
  
     /* -----
@@ -9,22 +10,29 @@ var MovingLaserEntity = me.ObjectEntity.extend({
  
     ------ */
     init: function(x, y, settings) {
+    	 function timer_tick() {
+            console.log("timer: " + timerId);
+        }     
+    	this.lasdelay = 1000;
         // call the constructor
-       	this.gravity = 0;
+       
         settings.spritewidth = 32;
         settings.spriteheight = 32;
         this.parent(x, y, settings);
         this.animationspeed = 1;
        	this.addAnimation("flickar",[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15]);
-        
-        this.distance = 0;
-        this.minDist = -1;
-        this.maxDist = 100;
+        this.previousTime = me.timer.getDelta();
+     
+      	this.speed = 1;
+    	this.vel.x = 1;
+
        
         this.collidable = true;
         this.setCurrentAnimation("flickar");
 
         this.type = me.game.ENEMY_OBJECT;	
+        
+     
         
         //this.setVelocity(10, 20);
         
@@ -39,6 +47,9 @@ var MovingLaserEntity = me.ObjectEntity.extend({
     	
     },
     */
+   
+   
+   
    onCollision: function(res, obj) {
     	
    },
@@ -56,19 +67,23 @@ var MovingLaserEntity = me.ObjectEntity.extend({
     		return true;
     	}
     	*/
-    	if(this.distance >= this.maxDist){
-    	this.distance--;
-    	this.vel.x--;
-    	}
-    	else if(this.distance <= this.minDist){
-    	this.distance++;
-    	this.vel.x++;	
-    	}
-    	
-    	
-    	
- 	}
+    		
+		 	this.movLaserTime = me.timer.getDelta() - this.previousTime;
+		 		console.log(this.movLaserTime);
+    		if(this.movLaserTime >= this.lasdelay){
+    			
+												// reverse the direction of the bullet
+            	this.vel.x = -this.vel.x; 
+            	this.movLaserTime = 0;    
+         		console.log("Switch Direction");
+				
+        		me.game.sort();	
+          	}
+
+    this.updateMovement();	
+ 	},
  	
+ 
  	// this function is called by the engine, when
     // an object is touched by something (here collected)
     
