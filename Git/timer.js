@@ -1,5 +1,6 @@
 // Member variable: Hold interval id of the timer
 var timerId = 0;
+var timerIdMinutes = 0;
 
 // Declaring class "Timer"
 var Timer = function()
@@ -30,6 +31,10 @@ var Timer = function()
             {
                 thisObject.Tick(); 
                 timerId++;
+                if (timerId == 60) {
+                    timerIdMinutes = 1;
+                    timerId = 0; 
+                }
             }, thisObject.Interval);
         }
     };

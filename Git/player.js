@@ -72,7 +72,7 @@ var PlayerEntity = me.ObjectEntity.extend({
         this.testText = new me.Font("Verdana", 48, "white");
 
         // Set the timer's position
-        this.testText.draw(ctx, " :" + timerId, me.game.viewport.pos.x + 500, me.game.viewport.pos.y + 50, 50);
+        this.testText.draw(ctx, timerIdMinutes + ":" + timerId, me.game.viewport.pos.x + 500, me.game.viewport.pos.y + 50, 50);
     },
 
     /* -----
@@ -328,9 +328,14 @@ var PlayerEntity = me.ObjectEntity.extend({
    		// If the player collides with an enemy object
     	if(res && (res.obj.type == me.game.ENEMY_OBJECT)){
     			this.isDeadz = true;
-    			gotHit = true;
-    		
+    			gotHit = true;		
     	}
+
+        // If the player collides with an exit portal
+        if(res && (res.obj.type == me.game.LevelEntity)){
+                this.levelComplete = true;
+        }
+
  		// Disable controls when dead
  		if(this.isDeadz){   
             obj.Stop();
@@ -351,6 +356,12 @@ var PlayerEntity = me.ObjectEntity.extend({
 			this.parent();
 			return true;
  		}
+
+        // Reset timer if level complete
+        if(this.levelComplete) {
+            obj.Stop();
+        }
+
         // update animation if necessary
         if (this.vel.x!=0 && this.vel.y==0) {
             // update object animation
