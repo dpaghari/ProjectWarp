@@ -69,7 +69,7 @@ var PlayerEntity = me.ObjectEntity.extend({
     draw: function(ctx) {
         ctx.font = "30px Arial";
         this.parent(ctx);
-        this.testText = new me.Font("Verdana", 48, "white");
+        this.testText = new me.Font("Futura", 25, "white");
 
         // Set the timer's position
         this.testText.draw(ctx, timerIdMinutes + ":" + timerId, me.game.viewport.pos.x + 500, me.game.viewport.pos.y + 50, 50);
