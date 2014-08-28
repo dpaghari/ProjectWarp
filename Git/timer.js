@@ -39,7 +39,7 @@ var Timer = function()
     {            
         thisObject.Enable = new Boolean(false);
         clearInterval(thisObject.timerId);
-        timerId = null;
+        timerId = "";
     };
 
 };
